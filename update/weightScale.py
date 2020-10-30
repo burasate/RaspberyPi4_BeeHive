@@ -33,7 +33,7 @@ def captureDivider(*_):
     inputTarget = input('Insert Something and Enter Weight Target (gram) :')
     rawData = getRawData()
     measures = numpy.median(rawData)
-    zeroAdj = configJson['config']['weightDivider']
+    zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
     divider = 1
     gram = measuresAdj / divider
@@ -51,7 +51,7 @@ def captureDivider(*_):
 def getWeightGram(*_):
     rawData = getRawData()
     measures = numpy.median(rawData)
-    zeroAdj = configJson['config']['weightDivider']
+    zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     measuresAdj = measures-zeroAdj
     gram = measuresAdj /divider
