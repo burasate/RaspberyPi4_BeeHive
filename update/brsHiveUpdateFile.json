@@ -1,0 +1,7 @@
+{
+  "csvFile.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/csvFile.py",
+  "googleSheet.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/Update/googleSheet.py",
+  "lineNotify.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/Update/lineNotify.py",
+  "main.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/Update/main.py",
+  "record.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/Update/record.py"
+}
