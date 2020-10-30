@@ -29,7 +29,6 @@ if bool(configJson['config']['active']):
     while True:
         record.dumpRecordData()
         record.writeRecordData()
-        #time.sleep(recordInterval*60)
-        time.sleep(5)
+        time.sleep(recordInterval*60)
 else:
     printHeader('Recording cancle')
