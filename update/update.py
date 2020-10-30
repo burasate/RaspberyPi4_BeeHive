@@ -5,9 +5,15 @@ import gSheet
 rootPath = os.path.dirname(os.path.abspath(__file__))
 dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
-updateFilePath = requests.get('https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/update.json').text
-fileNameSet = json.loads(updateFilePath)
 configJson = json.load(open(configPath))
+
+updateListURL = 'https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/update.json'
+while True:
+    connectStatus = requests.get(updateListURL).status_code
+    if connectStatus == 200:
+        updateFilePath = requests.get(updateListURL).text
+        break
+fileNameSet = json.loads(updateFilePath)
 
 def updateAllFile(*_):
     #Check Auto Update
@@ -19,12 +25,19 @@ def updateAllFile(*_):
             gSheet.updateConfigValue(configJson['idName'], 'config_autoUpdate', 0)
 
     for file in fileNameSet:
+
         print('Updating {} from {}'.format(file,fileNameSet[file]))
-        scriptUpdater = fileNameSet[file]
-        mainWriter = open(rootPath + os.sep + file, 'w')
-        urlReader = requests.get(scriptUpdater).text
-        mainWriter.writelines(urlReader)
-        mainWriter.close()
+        url = fileNameSet[file]
+        while True:
+            connectStatus = requests.get(url).status_code
+            print('connecting...')
+            if connectStatus == 200:
+                mainWriter = open(rootPath + os.sep + file, 'w')
+                urlReader = requests.get(url).text
+                mainWriter.writelines(urlReader)
+                mainWriter.close()
+                break
+
     print('System Updated')
 
 def updateConfig(*_):
