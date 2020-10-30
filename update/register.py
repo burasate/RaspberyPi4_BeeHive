@@ -24,6 +24,9 @@ if configData == None:
         print ('sending config data.. {}  {}'.format(colName,configJson['config'][colName]))
         gSheet.updateConfigValue(inputId, 'config_'+colName, configJson['config'][colName])
 
+    import update
+    update.updateConfig()
+
     finishText = '{} has been registered\nPlease check on your database'.format(inputId)
     print(finishText)
     lineNotify.sendNotifyMassage(finishText)
