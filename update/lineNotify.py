@@ -21,5 +21,5 @@ def sendNotifyImageMsg (imagePath,text='send image'):
 
 if __name__=='__main__':
     #sendNotifyMassage('test')
-    #sendNotifyImageMsg('C:/Users/DEX3D_I7/Pictures/UglyDolls2_1.mp4_snapshot_01.17.998.jpg')
+    sendNotifyImageMsg('C:/Users/DEX3D_I7/Pictures/UglyDolls2_1.mp4_snapshot_01.17.998.jpg')
     pass

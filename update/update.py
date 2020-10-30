@@ -37,6 +37,10 @@ def updateConfig(*_):
             #print(keyName)
             #print(configSheet[k])
             configJson['config'][keyName] = configSheet[k]
+        elif k == 'description':
+            configJson[k] = configSheet[k]
+        elif k == 'owner':
+            configJson[k] = configSheet[k]
     json.dump(configJson,open(configPath,'w'),indent=4)
     print ('config has been updated')
 

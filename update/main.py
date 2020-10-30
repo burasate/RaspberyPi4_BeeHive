@@ -18,15 +18,18 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-#Record
-printHeader('Recording')
-recordInterval = configJson['config']['recordInterval']
-print('Record every {} Minute'.format(recordInterval))
+if bool(configJson['config']['active']):
+    #Record
+    printHeader('Recording')
+    recordInterval = configJson['config']['recordInterval']
+    print('Record every {} Minute'.format(recordInterval))
 
-import record
-record.createDumpFile()
-while True:
-    record.dumpRecordData()
-    record.writeRecordData()
-    #time.sleep(recordInterval*60)
-    time.sleep(15)
+    import record
+    record.createDumpFile()
+    while True:
+        record.dumpRecordData()
+        record.writeRecordData()
+        #time.sleep(recordInterval*60)
+        time.sleep(5)
+else:
+    printHeader('Recording cancle')
