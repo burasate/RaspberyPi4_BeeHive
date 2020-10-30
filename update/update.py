@@ -24,21 +24,20 @@ def updateAllFile(*_):
         if onceTimeUpdate:
             gSheet.updateConfigValue(configJson['idName'], 'config_autoUpdate', 0)
 
-    for file in fileNameSet:
+        for file in fileNameSet:
 
-        print('Updating {} from {}'.format(file,fileNameSet[file]))
-        url = fileNameSet[file]
-        while True:
-            connectStatus = requests.get(url).status_code
-            print('connecting...')
-            if connectStatus == 200:
-                mainWriter = open(rootPath + os.sep + file, 'w')
-                urlReader = requests.get(url).text
-                mainWriter.writelines(urlReader)
-                mainWriter.close()
-                break
-
-    print('System Updated')
+            print('Updating {} from {}'.format(file,fileNameSet[file]))
+            url = fileNameSet[file]
+            while True:
+                connectStatus = requests.get(url).status_code
+                print('connecting...')
+                if connectStatus == 200:
+                    mainWriter = open(rootPath + os.sep + file, 'w')
+                    urlReader = requests.get(url).text
+                    mainWriter.writelines(urlReader)
+                    mainWriter.close()
+                    break
+        print('System Updated')
 
 def updateConfig(*_):
     configSheet = gSheet.loadConfigData(idName=configJson['idName'])
