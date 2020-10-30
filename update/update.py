@@ -20,13 +20,11 @@ def updateAllFile(*_):
 
     for file in fileNameSet:
         print('Updating {} from {}'.format(file,fileNameSet[file]))
-        """
         scriptUpdater = fileNameSet[file]
         mainWriter = open(rootPath + os.sep + file, 'w')
         urlReader = requests.get(scriptUpdater).text
         mainWriter.writelines(urlReader)
         mainWriter.close()
-        """
     print('System Updated')
 
 def updateConfig(*_):
