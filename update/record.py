@@ -31,7 +31,7 @@ def dumpRecordData(*_):
         'time' : dt.datetime.now().time().isoformat(),
         'weight' : weightScale.getWeightKg(),
         'temperature' : temperature.getTemperature(),
-        'humidity' : temperature.getTemperature(),
+        'humidity' : temperature.getHumidity(),
         'name' : configJson['idName']
     }
     for colName in header:
