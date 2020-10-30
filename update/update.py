@@ -1,34 +1,36 @@
 import os,json
 import requests
-import googleSheet
+import gSheet
 
 rootPath = os.path.dirname(os.path.abspath(__file__))
 dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
-updateFilePath = dataPath + '/brsHiveUpdateFile.json'
+updateFilePath = requests.get('https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/update.json').text
+fileNameSet = json.loads(updateFilePath)
 configJson = json.load(open(configPath))
 
 def updateAllFile(*_):
     #Check Auto Update
-    autoUpdate = bool(googleSheet.getConfigValue(configJson['idName'], 'config_autoUpdate'))
-    onceTimeUpdate = bool(googleSheet.getConfigValue(configJson['idName'], 'config_onceTimeUpdate'))
+    autoUpdate = bool(gSheet.getConfigValue(configJson['idName'], 'config_autoUpdate'))
+    onceTimeUpdate = bool(gSheet.getConfigValue(configJson['idName'], 'config_onceTimeUpdate'))
     if autoUpdate:
         print ('System Updating....')
         if onceTimeUpdate:
-            googleSheet.updateConfigValue(configJson['idName'], 'config_autoUpdate', 0)
-    """
-    fileNameSet = json.load(open(updateFilePath, 'r'))
+            gSheet.updateConfigValue(configJson['idName'], 'config_autoUpdate', 0)
+
     for file in fileNameSet:
+        print('Updating {} from {}'.format(file,fileNameSet[file]))
+        """
         scriptUpdater = fileNameSet[file]
         mainWriter = open(rootPath + os.sep + file, 'w')
         urlReader = requests.get(scriptUpdater).text
         mainWriter.writelines(urlReader)
         mainWriter.close()
-    """
+        """
     print('System Updated')
 
 def updateConfig(*_):
-    configSheet = googleSheet.loadConfigData(idName=configJson['idName'])
+    configSheet = gSheet.loadConfigData(idName=configJson['idName'])
     #Update local config
     for k in configSheet:
         if k.__contains__('config'):

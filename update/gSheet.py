@@ -30,17 +30,18 @@ def updateFromCSV(csvPath, workSheet):
     sheet.update(tableList,value_input_option='USER_ENTERED')
 
 def loadConfigData(idName):
-    print('Loading config data from gsheet....')
+    print('Loading config data from database....')
     sheet = connect().open(sheetName).worksheet('Config')
     configS = sheet.get_all_records()
     for r in configS :
         if r['idName'] == idName:
             print('config is loaded')
             return r
+    print ('Can not found ID Name')
     return None
 
 def updateConfigValue(idName, colName, value):
-    print('Loading config data from gsheet....')
+    print('Loading config data from database....')
     sheet = connect().open(sheetName).worksheet('Config')
     configS = sheet.get_all_records()
     header = sheet.row_values(1)
@@ -54,7 +55,7 @@ def updateConfigValue(idName, colName, value):
             print('online config has been updated ... {} {} is {}'.format(idName,colName,str(value)))
 
 def getConfigValue(idName, colName):
-    print('Loading config data from gsheet.... get value {} {}'.format(idName,colName))
+    print('Loading config data from database.... get value {} {}'.format(idName,colName))
     sheet = connect().open(sheetName).worksheet('Config')
     configS = sheet.get_all_records()
     header = sheet.row_values(1)
@@ -76,8 +77,4 @@ def addRow(workSheet,column):
     sheet.append_row(column,value_input_option='USER_ENTERED')
 
 if __name__ == '__main__':
-    #print(gSheetGetConfigValue('BRSHive100','config_recordInterval'))
-    #gSheetUpdateFromCSV('C:/Users/DEX3D_I7/Desktop/ttt.csv','Test')
-    #gSheetUpdateConfigData('BRSHive100','config_autoUpdate',0)
-    print(getWorksheetColumnName('Record'))
     pass

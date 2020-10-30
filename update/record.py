@@ -1,7 +1,8 @@
 import os,json
 import datetime as dt
-import csvFile,googleSheet
+import csvFile,gSheet
 import random
+import weightScale,temperature
 
 rootPath = os.path.dirname(os.path.abspath(__file__))
 dataPath = rootPath+'/data'
@@ -13,28 +14,6 @@ configJson = json.load(open(configPath))
 
 #header = googleSheet.getWorksheetColumnName('Record')
 header = ['Date', 'Time', 'Name', 'Weight', 'Temperature', 'Humidity']
-#-----For Temporary -----
-w = 2000.00
-t = 28.0
-hum =  70.0
-now = dt.datetime.now()
-def getWeightValue():
-    global w
-    w = w + random.randrange(-100.0, 200.0)
-    weightKg = w / 1000
-    #print ('Weight {} Kg'.format(weightKg))
-    return weightKg
-def getTempValue():
-    global t
-    t = t + (float(random.randrange(-5, 7)) / 5)
-    #print ('Temp {} *C'.format(t))
-    return t
-def getHumValue():
-    global hum
-    hum = hum + float(random.randrange(-5, 7)) / 5
-    #print ('Humedity {} %'.format(hum))
-    return hum
-#-----For Temporary -----
 
 def createDumpFile(*_):
     try:
@@ -50,9 +29,9 @@ def dumpRecordData(*_):
     dataS = {
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
-        'weight' : getWeightValue(),
-        'temperature' : getTempValue(),
-        'humidity' : getHumValue(),
+        'weight' : weightScale.getWeightKg(),
+        'temperature' : temperature.getTemperature(),
+        'humidity' : temperature.getTemperature(),
         'name' : configJson['idName']
     }
     for colName in header:
@@ -72,7 +51,7 @@ def writeRecordData(*_):
             col = csvFile.getRow(dumpFile, 0)
             csvFile.addRow(historyFile,col)
             try:
-                googleSheet.addRow('Record',col)
+                gSheet.addRow('Record', col)
             except:
                 pass
             csvFile.deleteRow(dumpFile,0)
