@@ -9,12 +9,15 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 3):
+def getRawData(rawDataCount = 25):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
-               pd_sck_pin=6)
+               pd_sck_pin=6,
+               channel = 'A',
+               gain = 64)
     hx.reset()
     data = hx.get_raw_data(rawDataCount)  # get raw data reading from hx711
+    print ('hx711 raw : {}'.format(data))
     GPIO.cleanup()
     return data
 
@@ -51,13 +54,13 @@ def getBoxPlotList (dataList):
     #print('mean {}'.format(sum(dataList) / len(dataList)))
     #print('median {}'.format(numpy.median(dataList)))
 
-def getRefineRawData(count=50):
+def getRefineRawData(count=3):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
         rawMean = numpy.mean(raw)
         rawDataList.append(rawMean)
-        print ('count {}/{} Calculating Raw {}'.format(i,count,rawMean))
+        print ('count {}/{} Calculating Raw {}'.format(i+1,count,rawMean))
     data = getBoxPlotList(rawDataList)
     return data
 
@@ -80,7 +83,7 @@ def captureDivider(*_):
     gram = measuresAdj / divider
     #for i in range(100):
     while True:
-        divider += 0.01
+        divider += 0.1
         gram = measuresAdj / divider
         print(gram)
         if round(gram, 0) <= int(inputTarget):
@@ -95,6 +98,7 @@ def getWeightGram(*_):
     measures = numpy.mean(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
+    #rel_weight / (rel_reading - init_reading)
     measuresAdj = measures-zeroAdj
     gram = measuresAdj /divider
     return gram
@@ -108,3 +112,7 @@ if __name__=='__main__':
     captureZero()
     captureDivider()
     print('Finished Calibrate')
+    weightTest = getWeightKg()
+    print('now weight is : {}'.format(weightTest))
+    #while True :
+    #getRawData()
