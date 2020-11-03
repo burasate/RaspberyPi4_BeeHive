@@ -9,7 +9,7 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 50):
+def getRawData(rawDataCount = 3):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6)
@@ -51,7 +51,7 @@ def getBoxPlotList (dataList):
     #print('mean {}'.format(sum(dataList) / len(dataList)))
     #print('median {}'.format(numpy.median(dataList)))
 
-def getRefineRawData(count=10):
+def getRefineRawData(count=50):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
