@@ -110,7 +110,7 @@ if __name__=='__main__':
     captureZero()
     captureDivider()
     print('Finished Calibrate')
-    Test After Callibrate
+    #Test After Callibrate
     while True:
         weightTest = getWeightKg()
         print('now weight is : {}'.format(weightTest))
