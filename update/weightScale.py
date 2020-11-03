@@ -9,16 +9,17 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(*_):
+def getRawData(rawDataCount = 3):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6,
                channel='A',
-               gain=64)
-    data = hx.get_raw_data(10)  # get raw data reading from hx711
+               gain=128)
     hx.reset()
+    data = hx.get_raw_data(rawDataCount)  # get raw data reading from hx711
     GPIO.cleanup()
     return data
+
 
 def getBoxPlotList (dataList):
     #arr = [12287.0, 12287.0, 2047.0, 16383.0, 24574.5, 16383.0, 8191.0, 4095.0, 16383.0, 16383.0]
@@ -52,21 +53,20 @@ def getBoxPlotList (dataList):
     #print('mean {}'.format(sum(dataList) / len(dataList)))
     #print('median {}'.format(numpy.median(dataList)))
 
-def getRefineRawData(count=5):
+def getRefineRawData(count=10):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
-        rawMedian = numpy.median(raw)
-        rawDataList.append(rawMedian)
-        print ('count {}/{} Calculating Raw {}'.format(i,count,rawMedian))
+        rawMean = numpy.mean(raw)
+        rawDataList.append(rawMean)
+        print ('count {}/{} Calculating Raw {}'.format(i,count,rawMean))
     data = getBoxPlotList(rawDataList)
     return data
-
 
 def captureZero(*_):
     input('Enter to set zero :')
     rawData = getRefineRawData()
-    measures = numpy.median(rawData)
+    measures = numpy.mean(rawData)
     configJson['config']['weightAdjZero'] = measures
     json.dump(configJson, open(configPath, 'w'), indent=4)
     gSheet.updateConfigValue(configJson['idName'],'config_weightAdjZero',measures)
@@ -75,7 +75,7 @@ def captureZero(*_):
 def captureDivider(*_):
     inputTarget = input('Insert Something and Enter Weight Target (gram) :')
     rawData = getRefineRawData()
-    measures = numpy.median(rawData)
+    measures = numpy.mean(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
     divider = 1.0
@@ -93,7 +93,7 @@ def captureDivider(*_):
 
 def getWeightGram(*_):
     rawData = getRefineRawData()
-    measures = numpy.median(rawData)
+    measures = numpy.mean(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     measuresAdj = measures-zeroAdj
