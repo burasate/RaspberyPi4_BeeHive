@@ -20,20 +20,19 @@ def getRawData(*_):
     GPIO.cleanup()
     return data
 
-def getBoxPlotList (arr):
+def getBoxPlotList (dataList):
     #arr = [12287.0, 12287.0, 2047.0, 16383.0, 24574.5, 16383.0, 8191.0, 4095.0, 16383.0, 16383.0]
-    arr = list(arr)
-    xmin = (min(arr))
-    xmax = (max(arr))
-    xmedian = (numpy.median(arr))
-    xq1 = numpy.percentile(arr, 25)
-    xq3 = numpy.percentile(arr, 75)
+    xmin = (min(dataList))
+    xmax = (max(dataList))
+    xmedian = (numpy.median(dataList))
+    xq1 = numpy.percentile(dataList, 25)
+    xq3 = numpy.percentile(dataList, 75)
     iqr = xq3 - xq1
     uprBound = xq3 + 1.5 * iqr
     lwrBound = xq1 - 1.5 * iqr
     newArr = []
     outlier = []
-    for i in len(arr):
+    for i in dataList:
         if i > uprBound:
             i = uprBound
             outlier.append(i)
@@ -43,16 +42,15 @@ def getBoxPlotList (arr):
         newArr.append(i)
     print('Box plot found outlier count : {}'.format(len(outlier)))
     return newArr
-
     #print(xmedian)
     #print(xq1)
     #print(xq3)
     #print(uprBound)
     #print(lwrBound)
-    #print('min {}'.format(min(arr)))
-    #print('max {}'.format(max(arr)))
-    #print('mean {}'.format(sum(arr) / len(arr)))
-    #print('median {}'.format(numpy.median(arr)))
+    #print('min {}'.format(min(dataList)))
+    #print('max {}'.format(max(dataList)))
+    #print('mean {}'.format(sum(dataList) / len(dataList)))
+    #print('median {}'.format(numpy.median(dataList)))
 
 def getRefineRawData(count=5):
     rawDataList = []
