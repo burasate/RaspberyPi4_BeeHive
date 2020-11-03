@@ -54,20 +54,20 @@ def getBoxPlotList (arr):
     #print('mean {}'.format(sum(arr) / len(arr)))
     #print('median {}'.format(numpy.median(arr)))
 
-def getRefineRawData(count=15):
+def getRefineData(count=10):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
         rawMedian = numpy.median(raw)
         rawDataList.append(rawMedian)
         print ('count {}/{} Calculating Raw {}'.format(i,count,rawMedian))
-    data = getBoxPlotList(rawDataList)
+    data = numpy.median(getBoxPlotList(rawDataList))
     return data
 
 
 def captureZero(*_):
     input('Set Zero Press Any Key..')
-    rawData = getRefineRawData()
+    rawData = getRefineData()
     measures = numpy.median(rawData)
     configJson['config']['weightAdjZero'] = measures
     json.dump(configJson, open(configPath, 'w'), indent=4)
@@ -76,7 +76,7 @@ def captureZero(*_):
 
 def captureDivider(*_):
     inputTarget = input('Insert Something and Enter Weight Target (gram) :')
-    rawData = getRefineRawData()
+    rawData = getRefineData()
     measures = numpy.median(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
@@ -94,7 +94,7 @@ def captureDivider(*_):
             break
 
 def getWeightGram(*_):
-    rawData = getRefineRawData()
+    rawData = getRefineData()
     measures = numpy.median(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
@@ -111,4 +111,3 @@ if __name__=='__main__':
     captureZero()
     captureDivider()
     print('Finished Calibrate')
-
