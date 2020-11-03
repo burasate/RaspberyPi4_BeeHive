@@ -9,12 +9,10 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 3):
+def getRawData(rawDataCount = 50):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
-               pd_sck_pin=6,
-               channel='A',
-               gain=128)
+               pd_sck_pin=6)
     hx.reset()
     data = hx.get_raw_data(rawDataCount)  # get raw data reading from hx711
     GPIO.cleanup()
@@ -80,7 +78,8 @@ def captureDivider(*_):
     measuresAdj = measures - zeroAdj
     divider = 1.0
     gram = measuresAdj / divider
-    for i in range(100):
+    #for i in range(100):
+    while True:
         divider += 0.01
         gram = measuresAdj / divider
         print(gram)
