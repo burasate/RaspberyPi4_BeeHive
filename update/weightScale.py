@@ -15,7 +15,7 @@ def getRawData(*_):
                pd_sck_pin=6,
                channel='A',
                gain=64)
-    data = hx.get_raw_data(100)  # get raw data reading from hx711
+    data = hx.get_raw_data(10)  # get raw data reading from hx711
     hx.reset()
     GPIO.cleanup()
     return data
