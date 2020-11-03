@@ -9,7 +9,7 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 3):
+def getRawData(rawDataCount = 25):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6,
@@ -41,34 +41,29 @@ def getBoxPlotList (dataList):
         elif i < lwrBound:
             i = lwrBound
             outlier.append(i)
-        newArr.append(i)
+        else:
+            newArr.append(i)
     print('Box plot found outlier count : {}'.format(len(outlier)))
     return newArr
-    #print(xmedian)
-    #print(xq1)
-    #print(xq3)
-    #print(uprBound)
-    #print(lwrBound)
-    #print('min {}'.format(min(dataList)))
-    #print('max {}'.format(max(dataList)))
-    #print('mean {}'.format(sum(dataList) / len(dataList)))
-    #print('median {}'.format(numpy.median(dataList)))
-
-def getRefineRawData(count=5):
+"""
+def getRefineRawData(count=3):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
-        rawMean = numpy.mean(raw)
+        boxPlot = getBoxPlotList(raw)
+        rawMean = numpy.mean(boxPlot)
         rawDataList.append(rawMean)
         print ('count {}/{} Calculating Raw {}'.format(i+1,count,rawMean))
         time.sleep(1)
     data = getBoxPlotList(rawDataList)
     return data
+"""
 
 def captureZero(*_):
     input('Enter to set zero :')
-    rawData = getRefineRawData()
-    measures = numpy.mean(rawData)
+    raw = getRawData()
+    boxPlot = getBoxPlotList(raw)
+    measures = numpy.mean(boxPlot)
     configJson['config']['weightAdjZero'] = measures
     json.dump(configJson, open(configPath, 'w'), indent=4)
     gSheet.updateConfigValue(configJson['idName'],'config_weightAdjZero',measures)
@@ -76,8 +71,9 @@ def captureZero(*_):
 
 def captureDivider(*_):
     inputTarget = input('Insert Something and Enter Weight Target (gram) :')
-    rawData = getRefineRawData()
-    measures = numpy.mean(rawData)
+    raw = getRawData()
+    boxPlot = getBoxPlotList(raw)
+    measures = numpy.mean(boxPlot)
     zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
     divider = 1.0
@@ -95,9 +91,9 @@ def captureDivider(*_):
             break
 
 def getWeightGram(*_):
-    rawData = getRefineRawData()
-    boxPlot = getBoxPlotList(rawData)
-    measures = numpy.mean(rawData)
+    raw = getRawData()
+    boxPlot = getBoxPlotList(raw)
+    measures = numpy.mean(boxPlot)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     #rel_weight / (rel_reading - init_reading)
@@ -114,7 +110,17 @@ if __name__=='__main__':
     captureZero()
     captureDivider()
     print('Finished Calibrate')
-    weightTest = getWeightKg()
-    print('now weight is : {}'.format(weightTest))
-    #while True :
-    #getRawData()
+    Test After Callibrate
+    while True:
+        weightTest = getWeightKg()
+        print('now weight is : {}'.format(weightTest))
+
+    #Test Input
+    """
+    while True :
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        x = numpy.mean(boxPlot)
+        y = numpy.median(boxPlot)
+        print ([x,y,abs(x-y)])
+    """
