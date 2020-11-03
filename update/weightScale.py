@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import RPi.GPIO as GPIO  # import GPIO
 from hx711 import HX711  # import the class HX711
-import numpy,os,json
+import numpy,os,json,time
 import gSheet
 
 rootPath = os.path.dirname(os.path.abspath(__file__))
@@ -9,12 +9,12 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 25):
+def getRawData(rawDataCount = 3):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6,
                channel = 'A',
-               gain = 64)
+               gain = 128)
     hx.reset()
     data = hx.get_raw_data(rawDataCount)  # get raw data reading from hx711
     print ('hx711 raw : {}'.format(data))
@@ -54,13 +54,14 @@ def getBoxPlotList (dataList):
     #print('mean {}'.format(sum(dataList) / len(dataList)))
     #print('median {}'.format(numpy.median(dataList)))
 
-def getRefineRawData(count=3):
+def getRefineRawData(count=5):
     rawDataList = []
     for i in range(count):
         raw = getRawData()
         rawMean = numpy.mean(raw)
         rawDataList.append(rawMean)
         print ('count {}/{} Calculating Raw {}'.format(i+1,count,rawMean))
+        time.sleep(1)
     data = getBoxPlotList(rawDataList)
     return data
 
@@ -95,6 +96,7 @@ def captureDivider(*_):
 
 def getWeightGram(*_):
     rawData = getRefineRawData()
+    boxPlot = getBoxPlotList(rawData)
     measures = numpy.mean(rawData)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
