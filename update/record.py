@@ -16,7 +16,11 @@ configJson = json.load(open(configPath))
 if bool(configJson['config']['lineStartupAlert']):
     lineNotify.sendNotifyMassage('{} is working now'.format(configJson['idName']))
 
-header = googleSheet.getWorksheetColumnName('Record')
+#column header
+try:
+    header = gSheet.getWorksheetColumnName('Record')
+except:
+    header = ['Date', 'Time', 'Name', 'Weight', 'Temperature', 'Humidity']
 
 def createDumpFile(*_):
     try:
