@@ -70,25 +70,30 @@ def captureZero(*_):
     print('Set zero measures finish')
 
 def captureDivider(*_):
-    inputTarget = input('Insert Something and Enter Weight Target (gram) :')
-    raw = getRawData()
-    boxPlot = getBoxPlotList(raw)
-    measures = numpy.mean(boxPlot)
-    zeroAdj = configJson['config']['weightAdjZero']
-    measuresAdj = measures - zeroAdj
-    divider = 1.0
-    gram = measuresAdj / divider
-    #for i in range(100):
-    while True:
-        divider += 0.1
+    dividerList = []
+    checkCount = 3
+    for i in range(checkCount):
+        inputTarget = input('Insert Something (object {}/{}) and Enter Weight Target (gram) :'.format(i+1,checkCount))
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        measures = numpy.mean(boxPlot)
+        zeroAdj = configJson['config']['weightAdjZero']
+        measuresAdj = measures - zeroAdj
+        divider = 1.0
         gram = measuresAdj / divider
-        print(gram)
-        if round(gram, 0) <= int(inputTarget):
-            print('Divider is {}'.format(divider))
-            configJson['config']['weightDivider'] = divider
-            json.dump(configJson, open(configPath, 'w'), indent=4)
-            gSheet.updateConfigValue(configJson['idName'], 'config_weightDivider', divider)
-            break
+        #for i in range(100):
+        while True:
+            gram = measuresAdj / divider
+            print('Calculating... {} g'.format(gram))
+            if round(gram, 0) <= int(inputTarget):
+                print('Divider is {}'.format(divider))
+                dividerList.append(divider)
+                break
+            divider += 0.1
+    dividerMean = numpy.mean(dividerList)
+    configJson['config']['weightDivider'] = dividerMean
+    json.dump(configJson, open(configPath, 'w'), indent=4)
+    gSheet.updateConfigValue(configJson['idName'], 'config_weightDivider', dividerMean)
 
 def getWeightGram(*_):
     raw = getRawData()
