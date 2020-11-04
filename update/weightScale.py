@@ -143,6 +143,7 @@ if __name__=='__main__':
         while True :
             raw = getRawData()
             boxPlot = getBoxPlotList(raw)
-            x = numpy.mean(boxPlot)
-            y = numpy.median(boxPlot)
-            print ([x,y,abs(x-y)])
+            measures = numpy.mean(boxPlot)
+            measuresMedian = numpy.median(boxPlot)
+            measuresError = abs(measures - measuresMedian)
+            print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
