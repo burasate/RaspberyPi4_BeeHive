@@ -14,7 +14,7 @@ configJson = json.load(open(configPath))
 
 #Notify
 if bool(configJson['config']['lineStartupAlert']):
-    sendNotifyMassage('{} is working now'.format(configJson['idName']))
+    lineNotify.sendNotifyMassage('{} is working now'.format(configJson['idName']))
 
 header = googleSheet.getWorksheetColumnName('Record')
 
