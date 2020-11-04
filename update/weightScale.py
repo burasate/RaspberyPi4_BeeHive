@@ -35,15 +35,12 @@ def getBoxPlotList (dataList):
     newArr = []
     outlier = []
     for i in dataList:
-        if i > uprBound:
-            i = uprBound
-            outlier.append(i)
-        elif i < lwrBound:
-            i = lwrBound
+        if i < 0 or i > uprBound or i < lwrBound:
             outlier.append(i)
         else:
             newArr.append(i)
     print('Box plot found outlier count : {}'.format(len(outlier)))
+    print('Box plot found outlier : {}'.format(outlier))
     return newArr
 """
 def getRefineRawData(count=3):
