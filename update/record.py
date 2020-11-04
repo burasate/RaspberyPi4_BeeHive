@@ -1,6 +1,6 @@
 import os,json
 import datetime as dt
-import csvFile,gSheet
+import csvFile,gSheet,lineNotify
 import random
 import weightScale,temperature
 
@@ -12,8 +12,11 @@ historyFile = recordPath+'/recordHistory.csv'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-#header = googleSheet.getWorksheetColumnName('Record')
-header = ['Date', 'Time', 'Name', 'Weight', 'Temperature', 'Humidity']
+#Notify
+if bool(configJson['config']['lineStartupAlert']):
+    sendNotifyMassage('{} is working now'.format(configJson['idName']))
+
+header = googleSheet.getWorksheetColumnName('Record')
 
 def createDumpFile(*_):
     try:

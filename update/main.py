@@ -1,7 +1,9 @@
 def printHeader (text):
-    print('---------------------------')
+    print('------------------------------------------------------')
     print(text)
-    print('---------------------------')
+    print('------------------------------------------------------')
+
+printHeader('\nBurasate Smart Hive Base System\n')
 
 #System Update
 printHeader('System Update')
