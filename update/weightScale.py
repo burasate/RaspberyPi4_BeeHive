@@ -36,7 +36,7 @@ def getBoxPlotList (dataList):
     newArr = []
     outlier = []
     for i in dataList:
-        if i < 0 or i > uprBound or i < lwrBound:
+        if i > uprBound or i < lwrBound:
             outlier.append(i)
         else:
             newArr.append(i)
@@ -87,9 +87,15 @@ def captureDivider(*_):
             break
 
 def getWeightGram(*_):
-    raw = getRawData()
-    boxPlot = getBoxPlotList(raw)
-    measures = numpy.mean(boxPlot)
+    while True:
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        measures = numpy.mean(boxPlot)
+        measuresMedian = numpy.median(boxPlot)
+        measuresError = abs(measures - measuresMedian)
+        print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
+        if measuresError < measuresErrorLimit:
+            break
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     #rel_weight / (rel_reading - init_reading)
