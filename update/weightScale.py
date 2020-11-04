@@ -9,7 +9,7 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = 25):
+def getRawData(rawDataCount = 15):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6,
