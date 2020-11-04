@@ -36,9 +36,9 @@ def dumpRecordData(*_):
     dataS = {
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
-        'weight' : weightScale.getWeightKg(),
-        'temperature' : temperature.getTemperature(),
-        'humidity' : temperature.getHumidity(),
+        'weight' : round(weightScale.getWeightKg(),2),
+        'temperature' : round(temperature.getTemperature(),2),
+        'humidity' : round(temperature.getHumidity(),2),
         'name' : configJson['idName']
     }
     for colName in header:
