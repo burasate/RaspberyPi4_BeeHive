@@ -72,25 +72,23 @@ def captureZero(*_):
 
 def captureDivider(*_):
     dividerList = []
-    checkCount = 3
-    for i in range(checkCount):
-        inputTarget = input('Insert Something (object {}/{}) and Enter Weight Target (gram) :'.format(i+1,checkCount))
-        raw = getRawData()
-        boxPlot = getBoxPlotList(raw)
-        measures = numpy.mean(boxPlot)
-        zeroAdj = configJson['config']['weightAdjZero']
-        measuresAdj = measures - zeroAdj
-        divider = 1.0
+    inputTarget = input('Place Something on hive base and Enter Weight Target (gram) :')
+    raw = getRawData(50)
+    boxPlot = getBoxPlotList(raw)
+    measures = numpy.mean(boxPlot)
+    zeroAdj = configJson['config']['weightAdjZero']
+    measuresAdj = measures - zeroAdj
+    divider = 1.0
+    gram = measuresAdj / divider
+    #for i in range(100):
+    while True:
         gram = measuresAdj / divider
-        #for i in range(100):
-        while True:
-            gram = measuresAdj / divider
-            print('Calculating... {} g'.format(gram))
-            if round(gram, 0) <= int(inputTarget):
-                print('Divider is {}'.format(divider))
-                dividerList.append(divider)
-                break
-            divider += 0.1
+        print('Calculating... {} g'.format(gram))
+        if round(gram, 0) <= int(inputTarget):
+            print('Divider is {}'.format(divider))
+            dividerList.append(divider)
+            break
+        divider += 0.1
     dividerMean = numpy.mean(dividerList)
     configJson['config']['weightDivider'] = dividerMean
     json.dump(configJson, open(configPath, 'w'), indent=4)
