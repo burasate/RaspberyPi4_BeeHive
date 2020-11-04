@@ -61,7 +61,7 @@ def getRefineRawData(count=3):
 
 def captureZero(*_):
     input('Enter to set zero :')
-    raw = getRawData(50)
+    raw = getRawData(
     boxPlot = getBoxPlotList(raw)
     measures = numpy.mean(boxPlot)
     print('Zero Offset is : {}'.format(measures))
@@ -73,7 +73,7 @@ def captureZero(*_):
 def captureDivider(*_):
     dividerList = []
     inputTarget = input('Place Something on hive base and Enter Weight Target (gram) :')
-    raw = getRawData(50)
+    raw = getRawData()
     boxPlot = getBoxPlotList(raw)
     measures = numpy.mean(boxPlot)
     zeroAdj = configJson['config']['weightAdjZero']
