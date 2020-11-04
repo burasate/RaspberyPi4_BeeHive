@@ -62,8 +62,8 @@ def getRefineRawData(count=3):
 """
 
 def captureZero(*_):
+    input('Enter to set zero :')
     while True:
-        input('Enter to set zero :')
         raw = getRawData()
         boxPlot = getBoxPlotList(raw)
         measures = numpy.mean(boxPlot)
