@@ -109,17 +109,17 @@ if __name__=='__main__':
         captureZero()
         captureDivider()
         print('Finished Calibrate')
-    #Test After Callibrate
-    while True:
-        weightTest = getWeightKg()
-        print('now weight is : {}'.format(weightTest))
-
-    #Test Input
-    """
-    while True :
-        raw = getRawData()
-        boxPlot = getBoxPlotList(raw)
-        x = numpy.mean(boxPlot)
-        y = numpy.median(boxPlot)
-        print ([x,y,abs(x-y)])
-    """
+    inputPrompt = input('y = Test Weight (Kg) | n = Testing Raw Data  y/n :')
+    if inputPrompt.lower() == 'y':
+        #Test After Callibrate
+        while True:
+            weightTest = getWeightKg()
+            print('now weight is : {}'.format(weightTest))
+    else:
+        #Test Input
+        while True :
+            raw = getRawData()
+            boxPlot = getBoxPlotList(raw)
+            x = numpy.mean(boxPlot)
+            y = numpy.median(boxPlot)
+            print ([x,y,abs(x-y)])
