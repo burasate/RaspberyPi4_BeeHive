@@ -11,6 +11,9 @@ configJson = json.load(open(configPath))
 
 weightRawDataSample = configJson['config']['weightRawDataSample']
 print ('Set Weight Raw Data Sample : {}'.format(weightRawDataSample))
+
+measuresErrorLimit = 5.0
+
 def getRawData(rawDataCount = weightRawDataSample):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
@@ -59,20 +62,32 @@ def getRefineRawData(count=3):
 """
 
 def captureZero(*_):
-    input('Enter to set zero :')
-    raw = getRawData()
-    boxPlot = getBoxPlotList(raw)
-    measures = numpy.mean(boxPlot)
-    configJson['config']['weightAdjZero'] = measures
-    json.dump(configJson, open(configPath, 'w'), indent=4)
-    gSheet.updateConfigValue(configJson['idName'],'config_weightAdjZero',measures)
-    print('Set zero measures finish')
+    while True:
+        input('Enter to set zero :')
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        measures = numpy.mean(boxPlot)
+        measuresMedian = numpy.median(boxPlot)
+        measuresError = abs(measures - measuresMedian)
+        print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
+        if measuresError < measuresErrorLimit:
+            configJson['config']['weightAdjZero'] = measures
+            json.dump(configJson, open(configPath, 'w'), indent=4)
+            gSheet.updateConfigValue(configJson['idName'], 'config_weightAdjZero', measures)
+            print('Set zero measures finish : raw {}'.format(measures))
+            break
 
 def captureDivider(*_):
     inputTarget = input('Insert Something and Enter Weight Target (gram) :')
-    raw = getRawData()
-    boxPlot = getBoxPlotList(raw)
-    measures = numpy.mean(boxPlot)
+    while True:
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        measures = numpy.mean(boxPlot)
+        measuresMedian = numpy.median(boxPlot)
+        measuresError = abs(measures - measuresMedian)
+        print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
+        if measuresError < measuresErrorLimit:
+            break
     zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
     divider = 1.0
@@ -90,9 +105,15 @@ def captureDivider(*_):
             break
 
 def getWeightGram(*_):
-    raw = getRawData()
-    boxPlot = getBoxPlotList(raw)
-    measures = numpy.mean(boxPlot)
+    while True:
+        raw = getRawData()
+        boxPlot = getBoxPlotList(raw)
+        measures = numpy.mean(boxPlot)
+        measuresMedian = numpy.median(boxPlot)
+        measuresError = abs(measures - measuresMedian)
+        print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
+        if measuresError < measuresErrorLimit:
+            break
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     #rel_weight / (rel_reading - init_reading)
