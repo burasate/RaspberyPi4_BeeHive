@@ -61,9 +61,10 @@ def getRefineRawData(count=3):
 
 def captureZero(*_):
     input('Enter to set zero :')
-    raw = getRawData()
+    raw = getRawData(50)
     boxPlot = getBoxPlotList(raw)
     measures = numpy.mean(boxPlot)
+    print('Zero Offset is : {}'.format(measures))
     configJson['config']['weightAdjZero'] = measures
     json.dump(configJson, open(configPath, 'w'), indent=4)
     gSheet.updateConfigValue(configJson['idName'],'config_weightAdjZero',measures)
