@@ -61,18 +61,16 @@ def getRefineRawData(count=3):
 
 def captureZero(*_):
     input('Enter to set zero :')
-    raw = getRawData(
+    raw = getRawData()
     boxPlot = getBoxPlotList(raw)
     measures = numpy.mean(boxPlot)
-    print('Zero Offset is : {}'.format(measures))
     configJson['config']['weightAdjZero'] = measures
     json.dump(configJson, open(configPath, 'w'), indent=4)
     gSheet.updateConfigValue(configJson['idName'],'config_weightAdjZero',measures)
     print('Set zero measures finish')
 
 def captureDivider(*_):
-    dividerList = []
-    inputTarget = input('Place Something on hive base and Enter Weight Target (gram) :')
+    inputTarget = input('Insert Something and Enter Weight Target (gram) :')
     raw = getRawData()
     boxPlot = getBoxPlotList(raw)
     measures = numpy.mean(boxPlot)
@@ -82,17 +80,15 @@ def captureDivider(*_):
     gram = measuresAdj / divider
     #for i in range(100):
     while True:
+        divider += 0.1
         gram = measuresAdj / divider
         print('Calculating... {} g'.format(gram))
         if round(gram, 0) <= int(inputTarget):
             print('Divider is {}'.format(divider))
-            dividerList.append(divider)
+            configJson['config']['weightDivider'] = divider
+            json.dump(configJson, open(configPath, 'w'), indent=4)
+            gSheet.updateConfigValue(configJson['idName'], 'config_weightDivider', divider)
             break
-        divider += 0.1
-    dividerMean = numpy.mean(dividerList)
-    configJson['config']['weightDivider'] = dividerMean
-    json.dump(configJson, open(configPath, 'w'), indent=4)
-    gSheet.updateConfigValue(configJson['idName'], 'config_weightDivider', dividerMean)
 
 def getWeightGram(*_):
     raw = getRawData()
