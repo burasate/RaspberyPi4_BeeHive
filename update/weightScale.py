@@ -28,10 +28,6 @@ def getRawData(rawDataCount = weightRawDataSample):
 
 
 def getBoxPlotList (dataList):
-    #arr = [12287.0, 12287.0, 2047.0, 16383.0, 24574.5, 16383.0, 8191.0, 4095.0, 16383.0, 16383.0]
-    xmin = (min(dataList))
-    xmax = (max(dataList))
-    xmedian = (numpy.median(dataList))
     xq1 = numpy.percentile(dataList, 25)
     xq3 = numpy.percentile(dataList, 75)
     iqr = xq3 - xq1
@@ -45,21 +41,7 @@ def getBoxPlotList (dataList):
         else:
             newArr.append(i)
     print('Box plot found outlier count : {}'.format(len(outlier)))
-    print('Box plot found outlier : {}'.format(outlier))
     return newArr
-"""
-def getRefineRawData(count=3):
-    rawDataList = []
-    for i in range(count):
-        raw = getRawData()
-        boxPlot = getBoxPlotList(raw)
-        rawMean = numpy.mean(boxPlot)
-        rawDataList.append(rawMean)
-        print ('count {}/{} Calculating Raw {}'.format(i+1,count,rawMean))
-        time.sleep(1)
-    data = getBoxPlotList(rawDataList)
-    return data
-"""
 
 def captureZero(*_):
     input('Enter to set zero :')
