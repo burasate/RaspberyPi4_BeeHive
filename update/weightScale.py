@@ -87,15 +87,9 @@ def captureDivider(*_):
             break
 
 def getWeightGram(*_):
-    while True:
-        raw = getRawData()
-        boxPlot = getBoxPlotList(raw)
-        measures = numpy.mean(boxPlot)
-        measuresMedian = numpy.median(boxPlot)
-        measuresError = abs(measures - measuresMedian)
-        print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
-        if measuresError < measuresErrorLimit:
-            break
+    raw = getRawData()
+    boxPlot = getBoxPlotList(raw)
+    measures = numpy.mean(boxPlot)
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
     #rel_weight / (rel_reading - init_reading)
