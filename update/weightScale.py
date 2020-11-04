@@ -113,9 +113,11 @@ def getWeightKg(*_):
     return kilogram
 
 if __name__=='__main__':
-    captureZero()
-    captureDivider()
-    print('Finished Calibrate')
+    inputPrompt = input('HX711 Callibrate ?  y/n :')
+    if inputPrompt.lower() == 'y':
+        captureZero()
+        captureDivider()
+        print('Finished Calibrate')
     #Test After Callibrate
     while True:
         weightTest = getWeightKg()
