@@ -9,7 +9,9 @@ dataPath = rootPath+'/data'
 configPath = dataPath + '/brsHiveInfo.json'
 configJson = json.load(open(configPath))
 
-def getRawData(rawDataCount = configJson['config']['weightRawDataSample']):
+weightRawDataSample = configJson['config']['weightRawDataSample']
+print ('Set Weight Raw Data Sample : {}'.format(weightRawDataSample))
+def getRawData(rawDataCount = weightRawDataSample):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
     hx = HX711(dout_pin=5,
                pd_sck_pin=6,
