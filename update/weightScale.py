@@ -11,8 +11,8 @@ configJson = json.load(open(configPath))
 
 weightRawDataSample = configJson['config']['weightRawDataSample']
 print ('Set Weight Raw Data Sample : {}'.format(weightRawDataSample))
-
-measuresErrorLimit = 5.0
+weightErrorLimit = configJson['config']['weightErrorLimit']
+print ('Set Weight Error Limit : {}'.format(weightErrorLimit))
 
 def getRawData(rawDataCount = weightRawDataSample):
     GPIO.setmode(GPIO.BCM)  # set GPIO pin mode to BCM numbering
@@ -52,7 +52,7 @@ def captureZero(*_):
         measuresMedian = numpy.median(boxPlot)
         measuresError = abs(measures - measuresMedian)
         print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
-        if measuresError < measuresErrorLimit:
+        if measuresError < weightErrorLimit:
             configJson['config']['weightAdjZero'] = measures
             json.dump(configJson, open(configPath, 'w'), indent=4)
             gSheet.updateConfigValue(configJson['idName'], 'config_weightAdjZero', measures)
@@ -68,7 +68,7 @@ def captureDivider(*_):
         measuresMedian = numpy.median(boxPlot)
         measuresError = abs(measures - measuresMedian)
         print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
-        if measuresError < measuresErrorLimit:
+        if measuresError < weightErrorLimit:
             break
     zeroAdj = configJson['config']['weightAdjZero']
     measuresAdj = measures - zeroAdj
@@ -94,7 +94,7 @@ def getWeightGram(*_):
         measuresMedian = numpy.median(boxPlot)
         measuresError = abs(measures - measuresMedian)
         print('mean : {}  median : {} , error : {}'.format(measures, measuresMedian, measuresError))
-        if measuresError < measuresErrorLimit:
+        if measuresError < weightErrorLimit:
             break
     zeroAdj = configJson['config']['weightAdjZero']
     divider = configJson['config']['weightDivider']
