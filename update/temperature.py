@@ -27,7 +27,7 @@ def getTemperature(*_):
         dataList = boxPlot.getBoxPlotList(dataList)
         meanMedianError = boxPlot.getMeanMedianErrror(dataList)
         if meanMedianError['error'] < temperatureErrorLimit:
-            return meanMedianError['temperature']
+            return meanMedianError['mean']
             break
 
 def getHumidity(*_):
@@ -39,7 +39,7 @@ def getHumidity(*_):
         dataList = boxPlot.getBoxPlotList(dataList)
         meanMedianError = boxPlot.getMeanMedianErrror(dataList)
         if meanMedianError['error'] < temperatureErrorLimit:
-            return meanMedianError['temperature']
+            return meanMedianError['mean']
             break
 
 if __name__=='__main__':
