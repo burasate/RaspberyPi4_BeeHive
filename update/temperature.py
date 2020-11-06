@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import numpy,os,json
 import boxPlot
 import Adafruit_DHT
 
