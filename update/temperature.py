@@ -2,6 +2,11 @@
 import boxPlot
 import Adafruit_DHT
 
+rootPath = os.path.dirname(os.path.abspath(__file__))
+dataPath = rootPath+'/data'
+configPath = dataPath + '/brsHiveInfo.json'
+configJson = json.load(open(configPath))
+
 sensor = Adafruit_DHT.DHT22
 pin = 8
 
