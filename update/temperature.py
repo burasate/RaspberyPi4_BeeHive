@@ -27,7 +27,7 @@ def getRawData(*_):
 def getTemperature(*_):
     while True:
         dataList = []
-        for i in range (20):
+        for i in range (5):
             data = getRawData()
             dataList.append(data['temperature'])
         dataList = boxPlot.getBoxPlotList(dataList)
@@ -39,7 +39,7 @@ def getTemperature(*_):
 def getHumidity(*_):
     while True:
         dataList = []
-        for i in range (20):
+        for i in range (5):
             data = getRawData()
             dataList.append(data['humidity'])
         dataList = boxPlot.getBoxPlotList(dataList)
