@@ -8,11 +8,10 @@ def getFreeSpaceStat(*_):
     return (round(gigabytes,2))
 
 def getCPUTemp(*_):
-    def measure_temp():
-        temp = os.popen('vcgencmd measure_temp').readline()
-        temp = temp.replace('temp=','')
-        temp = temp.replace('\'C','')
-        try:
-            return float(temp)
-        except:
-            return (temp)
+    temp = os.popen('vcgencmd measure_temp').readline()
+    temp = temp.replace('temp=','')
+    temp = temp.replace('\'C','')
+    try:
+        return float(temp)
+    except:
+        return (temp)
