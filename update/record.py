@@ -34,7 +34,7 @@ def createDumpFile(*_):
 def dumpRecordData(*_):
     col = [None] * len(header)
     dataS = {
-        'epoch' : dt.datetime.now().timestamp()
+        'epoch' : dt.datetime.now().timestamp(),
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
         'weight' : round(weightScale.getWeightKg(),2),
