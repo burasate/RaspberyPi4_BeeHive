@@ -6,5 +6,6 @@
   "record.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/record.py",
   "temperature.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/temperature.py",
   "weightScale.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/weightScale.py",
-  "boxPlot.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/boxPlot.py"
+  "boxPlot.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/boxPlot.py",
+  "piStat.py": "https://raw.githubusercontent.com/burasate/RaspberyPi4_BeeHive/main/update/piStat.py"
 }

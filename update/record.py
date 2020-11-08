@@ -1,7 +1,7 @@
 import os,json
 import datetime as dt
 import csvFile,gSheet,lineNotify
-import random
+import piStat
 import weightScale,temperature
 
 rootPath = os.path.dirname(os.path.abspath(__file__))
@@ -34,12 +34,15 @@ def createDumpFile(*_):
 def dumpRecordData(*_):
     col = [None] * len(header)
     dataS = {
+        'epoch' : dt.datetime.now().timestamp()
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
         'weight' : round(weightScale.getWeightKg(),2),
         'temperature' : round(temperature.getTemperature(),2),
         'humidity' : round(temperature.getHumidity(),2),
-        'name' : configJson['idName']
+        'name' : configJson['idName'],
+        'core_temp' : piStat.getCPUTemp(),
+        'free_space' : piStat.getFreeSpaceStat()
     }
     for colName in header:
         index = header.index(colName)
@@ -56,11 +59,8 @@ def writeRecordData(*_):
         rowCount = len(csvFile.getAll(dumpFile))
         for i in range(rowCount):
             col = csvFile.getRow(dumpFile, 0)
-            csvFile.addRow(historyFile,col)
-            try:
-                gSheet.addRow('Record', col)
-            except:
-                pass
+            #csvFile.addRow(historyFile,col)
+            gSheet.addRow('Record', col)
             csvFile.deleteRow(dumpFile,0)
 
 
