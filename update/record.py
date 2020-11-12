@@ -59,9 +59,12 @@ def writeRecordData(*_):
         rowCount = len(csvFile.getAll(dumpFile))
         for i in range(rowCount):
             col = csvFile.getRow(dumpFile, 0)
-            #csvFile.addRow(historyFile,col)
-            gSheet.addRow('Record', col)
-            csvFile.deleteRow(dumpFile,0)
+            try:
+                #csvFile.addRow(historyFile,col)
+                gSheet.addRow('Record', col)
+                csvFile.deleteRow(dumpFile,0)
+            except:
+                print ('cannot add row in database')
 
 
 if __name__=='__main__':
