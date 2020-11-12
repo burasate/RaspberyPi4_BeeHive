@@ -24,7 +24,7 @@ except:
 
 def createDumpFile(*_):
     try:
-        os.remove(dumpFile)
+        #os.remove(dumpFile)
         file = open(dumpFile, 'w')
     except:
         file = open(dumpFile,'w')
@@ -35,6 +35,7 @@ def dumpRecordData(*_):
     col = [None] * len(header)
     dataS = {
         'epoch' : dt.datetime.now().timestamp(),
+        'date_time' : dt.datetime.isoformat(),
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
         'weight' : round(weightScale.getWeightKg(),2),
