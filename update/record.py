@@ -35,7 +35,7 @@ def dumpRecordData(*_):
     col = [None] * len(header)
     dataS = {
         'epoch' : dt.datetime.now().timestamp(),
-        'date_time' : dt.datetime.now().strftime("%m-%d-%Y, %H:%M:%S"),
+        'date_time' : dt.datetime.now().strftime("%Y-%m-%d, %H:%M:%S"),
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
         'weight' : round(weightScale.getWeightKg(),2),
