@@ -28,7 +28,7 @@ if bool(configJson['config']['active']):
 
     import record
     record.createDumpFile()
-    record.cleanupRecordSheet(days=8)
+    record.cleanupRecordSheet(days=4)
     while True:
         record.dumpRecordData()
         record.writeRecordData()
