@@ -31,11 +31,21 @@ def createDumpFile(*_):
     finally:
         file.close()
 
+def cleanupRecordSheet(days=30):
+    now = dt.datetime.now()
+    past = now - dt.timedelta(days=days)
+    dataS = gSheet.getAllDataS('Record')
+    rowIndex = 1
+    for data in dataS:
+        rowIndex += 1
+        if data['epoch'] < round(past.timestamp()):
+            gSheet.deleteRow('Record', 'epoch', data['epoch'])
+
 def dumpRecordData(*_):
     col = [None] * len(header)
     dataS = {
         'epoch' : dt.datetime.now().timestamp(),
-        'date_time' : dt.datetime.now().strftime("%Y-%m-%d, %H:%M:%S"),
+        'date_time' : dt.datetime.now(),
         'date' : dt.datetime.now().date().isoformat(),
         'time' : dt.datetime.now().time().isoformat(),
         'year' : dt.datetime.now().year,

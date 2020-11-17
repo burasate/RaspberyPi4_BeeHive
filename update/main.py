@@ -28,9 +28,10 @@ if bool(configJson['config']['active']):
 
     import record
     record.createDumpFile()
+    record.cleanupRecordSheet(days=8)
     while True:
         record.dumpRecordData()
         record.writeRecordData()
         time.sleep(recordInterval*60)
 else:
-    printHeader('Recording cancle')
+    printHeader('Recording cancel')

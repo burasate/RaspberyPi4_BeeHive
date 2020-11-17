@@ -76,5 +76,15 @@ def addRow(workSheet,column):
     sheet = connect().open(sheetName).worksheet(workSheet)
     sheet.append_row(column,value_input_option='USER_ENTERED')
 
+def deleteRow(workSheet,colName,value):
+    sheet = connect().open(sheetName).worksheet(workSheet)
+    dataS = sheet.get_all_records()
+    rowIndex = 1
+    for data in dataS:
+        rowIndex += 1
+        if data[colName] == value:
+            sheet.delete_rows(rowIndex,rowIndex)
+            print('Sheet "{}" Deleted Row {} {}'.format(workSheet,rowIndex,data))
+
 if __name__ == '__main__':
     pass
