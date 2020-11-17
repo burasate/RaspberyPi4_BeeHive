@@ -86,5 +86,10 @@ def deleteRow(workSheet,colName,value):
             sheet.delete_rows(rowIndex,rowIndex)
             print('Sheet "{}" Deleted Row {} {}'.format(workSheet,rowIndex,data))
 
+def getAllDataS(workSheet):
+    sheet = connect().open(sheetName).worksheet(workSheet)
+    dataS = sheet.get_all_records()
+    return dataS
+
 if __name__ == '__main__':
     pass
