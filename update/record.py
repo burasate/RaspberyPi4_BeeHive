@@ -50,6 +50,7 @@ def dumpRecordData(*_):
         'time' : dt.datetime.now().time().isoformat(),
         'year' : dt.datetime.now().year,
         'month' : dt.datetime.now().month,
+        'week_num' : (dt.datetime.now().isocalendar())[1],
         'day' : dt.datetime.now().day,
         'hour' : dt.datetime.now().hour,
         'minute' : dt.datetime.now().minute,
