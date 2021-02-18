@@ -91,5 +91,23 @@ def getAllDataS(workSheet):
     dataS = sheet.get_all_records()
     return dataS
 
+def setValue(workSheet,findKey=None,findValue=None,key=None,value=None):
+    dataS = getAllDataS(workSheet)
+    rowIndex = 1
+    for data in dataS:
+        rowIndex += 1
+        if not key in data:
+            return None
+        if data[findKey] == findValue and key in data:
+            colIndex = 0
+            for col in getWorksheetColumnName(workSheet):
+                colIndex += 1
+                if col == key:
+                    sheet = connect().open(sheetName).worksheet(workSheet)
+                    sheet.update_cell(row=rowIndex,col=colIndex,value=value)
+                    print('update row : {}  column : \'{}\'  value : {}'.format(rowIndex,key,value))
+                    break
+            break
+
 if __name__ == '__main__':
     pass
